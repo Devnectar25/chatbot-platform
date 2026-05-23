@@ -12,7 +12,11 @@ MULTILINGUAL_EF = None
 
 def get_chroma_collection():
     global MULTILINGUAL_EF
-    client = chromadb.PersistentClient(path="./chroma_db")
+    # Use absolute path so it works regardless of which directory the server is launched from
+    _base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    _chroma_path = os.path.join(_base_dir, "chroma_db")
+    client = chromadb.PersistentClient(path=_chroma_path)
+    print(f"[CHROMA] Using DB at: {_chroma_path}")
     
     if MULTILINGUAL_EF is None:
         print("Initializing Multilingual Embedding Function...")
